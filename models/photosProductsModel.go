@@ -1,6 +1,7 @@
 package models
 
 import (
+	"gorm.io/datatypes"
 	"gorm.io/gorm"
 	"time"
 )
@@ -8,7 +9,7 @@ import (
 type PhotosProduct struct {
 	gorm.Model
 	IdProduct  uint
-	ImagePaths string
-	CreatedAt  time.Time `gorm:"type:datetime;not null"`
-	UpdatedAt  time.Time `gorm:"type:datetime;not null"`
+	ImagePaths datatypes.JSON `json:"image_paths"`
+	CreatedAt  time.Time      `gorm:"type:datetime;not null"`
+	UpdatedAt  time.Time      `gorm:"type:datetime;not null"`
 }

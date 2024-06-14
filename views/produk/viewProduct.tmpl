@@ -1,0 +1,15 @@
+{{template "partials/top" .}}
+
+
+<style>
+    .gambar{
+        width: 10rem;
+        height: 8rem;
+    }
+</style>
+
+{{range .photos}}
+    <img src="/{{.}}" alt="" class="img gambar">
+{{end}}
+
+{{template "partials/bot" .}}
