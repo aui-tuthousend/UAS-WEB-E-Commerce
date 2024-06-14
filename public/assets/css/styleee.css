@@ -1,0 +1,25 @@
+*{
+    box-sizing: border-box;
+    /*font-family: 'Space Grotesk', sans-serif;*/
+    font-family: "Lexend Light";
+
+
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    text-decoration: none;
+}
+
+.img{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /*transition: opacity 0.3s ease-in-out;*/
+    object-fit: cover;
+}
+
+
+.c1{
+    display: flex;
+    gap: 0;
+}
