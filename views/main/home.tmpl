@@ -1,0 +1,20 @@
+{{template "partials/top" .}}
+
+<style>
+    .gambar{
+        width: 10rem;
+        height: 8rem;
+    }
+</style>
+{{range .products }}
+    <div class="c1">
+        <img src="{{.ProductImageCover}}" alt="" class="img gambar">
+        <h1>{{.ProductName}}</h1>
+        <p>{{.ProductDescription}}</p>
+        <h2>{{.ProductPrice}}</h2>
+        <a href="/produk/{{.ID}}">view produk</a>
+    </div>
+
+{{end}}
+
+{{template "partials/bot" .}}

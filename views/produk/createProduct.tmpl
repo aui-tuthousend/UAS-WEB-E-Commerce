@@ -1,0 +1,30 @@
+{{template "partials/top" .}}
+
+<form action="/storeProduct" method="POST" enctype="multipart/form-data">
+
+    <label for="title">Name</label>
+    <input type="text" name="name" required>
+    <br>
+    <label for="">Description:</label>
+    <textarea name="desc" required></textarea>
+    <br>
+    <label for="">idS:</label>
+    <input type="number" name="idS" required>
+    <br>
+    <label for="description">Stok:</label>
+    <input type="number" name="stok" required>
+    <br>
+    <label for="description">Price:</label>
+    <input type="number" name="price" required>
+    <br>
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" accept="image/jpeg, image/png" required>
+    <br>
+    <label for="images">Images:</label>
+    <input type="file" id="images" name="images" accept="image/jpeg, image/png" multiple required>
+    <br>
+    <button type="submit">Create Post</button>
+</form>
+
+{{template "partials/bot" .}}
+
