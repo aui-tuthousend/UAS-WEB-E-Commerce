@@ -1,0 +1,43 @@
+package controllers
+
+import (
+	"github.com/gofiber/fiber/v2"
+	"golang.org/x/crypto/bcrypt"
+	"web_uas/initializers"
+	"web_uas/models"
+)
+
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}
+
+func Register(c *fiber.Ctx) error {
+	type Request struct {
+		Username string `json:"username"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	var req Request
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
+	}
+
+	hashedPassword, err := HashPassword(req.Password)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to hash password"})
+	}
+
+	user := models.User{
+		Username: req.Username,
+		Email:    req.Email,
+		Password: hashedPassword,
+	}
+
+	if err := initializers.GetDB().Create(&user).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create user"})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(user)
+}
