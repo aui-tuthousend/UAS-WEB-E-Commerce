@@ -33,14 +33,8 @@ func ViewProduct(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).SendString("Product not found")
 	}
 
-	var photos models.PhotosProduct
-	query := initializers.GetDB().Model(&models.PhotosProduct{}).Where("id_product = ?", uint(id))
-	if err := query.Find(&photos).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).SendString("No photos found with the given conditions")
-	}
-
 	var imagePaths []string
-	if err := json.Unmarshal(photos.ImagePaths, &imagePaths); err != nil {
+	if err := json.Unmarshal(product.ImagePaths, &imagePaths); err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString("Failed to unmarshal image paths")
 	}
 
@@ -71,19 +65,6 @@ func StoreProduct(c *fiber.Ctx) error {
 		return err
 	}
 
-	newProduct := models.Product{
-		ProductName:        name,
-		ProductDescription: desc,
-		ProductImageCover:  imagePath,
-		IdSeller:           idSeler,
-		ProductStock:       stok,
-		ProductPrice:       price,
-	}
-
-	if err := initializers.GetDB().Create(&newProduct).Error; err != nil {
-		return err
-	}
-
 	form, err := c.MultipartForm()
 	files := form.File["images"]
 	var imagePathsPhotos []string
@@ -102,12 +83,18 @@ func StoreProduct(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).SendString("Failed to marshal image paths")
 	}
 
-	newPhotos := models.PhotosProduct{
-		IdProduct:  newProduct.ID,
-		ImagePaths: datatypes.JSON(imagePathsJSON),
+	newProduct := models.Product{
+		ProductName:        name,
+		ProductDescription: desc,
+		ProductImageCover:  imagePath,
+		IdSeller:           idSeler,
+		ProductStock:       stok,
+		ProductPrice:       price,
+		ImagePaths:         datatypes.JSON(imagePathsJSON),
 	}
-	if err := initializers.GetDB().Create(&newPhotos).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString("Failed to create post")
+
+	if err := initializers.GetDB().Create(&newProduct).Error; err != nil {
+		return err
 	}
 
 	return c.Redirect("/")
