@@ -25,7 +25,6 @@ func ConnectDB() {
 
 func SyncDB() {
 	DB.AutoMigrate(&models.Product{})
-	DB.AutoMigrate(&models.PhotosProduct{})
 }
 
 func GetDB() *gorm.DB {
