@@ -10,4 +10,5 @@ type User struct {
 	Email    string  `json:"email" gorm:"unique"`
 	Password string  `json:"-"`
 	Saldo    float64 `gorm:"default:0"`
+	Status   string
 }
