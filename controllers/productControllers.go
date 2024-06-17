@@ -48,11 +48,9 @@ func StoreProduct(c *fiber.Ctx) error {
 
 	name := c.FormValue("name")
 	desc := c.FormValue("desc")
-	idSel := c.FormValue("idS")
 	sto := c.FormValue("stok")
 	pric := c.FormValue("price")
 
-	idSeler, err := strconv.Atoi(idSel)
 	stok, err := strconv.Atoi(sto)
 	price, err := strconv.Atoi(pric)
 
@@ -87,7 +85,6 @@ func StoreProduct(c *fiber.Ctx) error {
 		ProductName:        name,
 		ProductDescription: desc,
 		ProductImageCover:  imagePath,
-		IdSeller:           idSeler,
 		ProductStock:       stok,
 		ProductPrice:       price,
 		ImagePaths:         datatypes.JSON(imagePathsJSON),

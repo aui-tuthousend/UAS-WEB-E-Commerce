@@ -6,12 +6,12 @@ import (
 	"time"
 )
 
-type Product struct {
+type ProductCopy struct {
 	gorm.Model
 	ProductName        string
 	ProductDescription string
 	ProductImageCover  string
-	ProductStock       int
+	Quantity           int
 	ProductPrice       int
 	ImagePaths         datatypes.JSON `json:"image_paths"`
 	CreatedAt          time.Time      `gorm:"type:datetime;not null"`
