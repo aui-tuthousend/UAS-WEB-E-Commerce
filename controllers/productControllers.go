@@ -14,7 +14,6 @@ import (
 func ShowProduct(c *fiber.Ctx) error {
 
 	var products []models.Product
-
 	if err := initializers.GetDB().Find(&products).Error; err != nil {
 		return err
 	}
