@@ -12,7 +12,11 @@
         <h1>{{.ProductName}}</h1>
         <p>{{.ProductDescription}}</p>
         <h2>{{.ProductPrice}}</h2>
+        <h2>{{.ProductStock}}</h2>
         <a href="/produk/{{.ID}}">view produk</a>
+        <form action="/insertWishlist/1/{{.ID}}" method="POST" style="display:inline;">
+            <button type="submit">🛒</button>
+        </form>
     </div>
 
 {{end}}
