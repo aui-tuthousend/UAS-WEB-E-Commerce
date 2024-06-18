@@ -7,6 +7,7 @@ import (
 
 func SetupRoutes(app *fiber.App) {
 
+	app.Post("/insertWishlist/:idUser/:idProduct", controllers.InsertIntoWishlist)
 	app.Post("/storeProduct", controllers.StoreProduct)
 
 	app.Get("/createProduct", func(c *fiber.Ctx) error { return c.Render("produk/createProduct", fiber.Map{}) })
