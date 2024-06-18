@@ -35,8 +35,17 @@ func Register(c *fiber.Ctx) error {
 		Password: hashedPassword,
 	}
 
+	wishlist := models.WishList{
+		IdUser: user.ID,
+		Total:  0,
+	}
+
 	if err := initializers.GetDB().Create(&user).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create user"})
+	}
+
+	if err := initializers.GetDB().Create(&wishlist).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create wishlist"})
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(user)
