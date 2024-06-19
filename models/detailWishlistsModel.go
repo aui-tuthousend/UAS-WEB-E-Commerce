@@ -9,6 +9,7 @@ type DetailWishlist struct {
 	gorm.Model
 	IdWishlist   uint
 	IdProduct    uint
+	ProductImage string
 	ProductName  string
 	ProductPrice int
 	Quantity     int       `gorm:"default: 1"`
