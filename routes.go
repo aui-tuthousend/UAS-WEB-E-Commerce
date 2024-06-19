@@ -16,6 +16,6 @@ func SetupRoutes(app *fiber.App) {
 	app.Get("/produk/:id", controllers.ViewProduct)
 
 	app.Get("/wishlist/:idUser", controllers.ShowWishList)
-	app.Post("/updateWishlistQuantity/:idUser", controllers.UpdateWishlistQ)
+	app.Post("/updateWishlistQuantity/:idDQ", controllers.UpdateWishlistQ)
 
 }
