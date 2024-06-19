@@ -1,0 +1,27 @@
+{{template "partials/top" .}}
+
+
+{{/*<form action="/checkout" method="POST">*/}}
+    {{range .wishlists}}
+        <div class="wishlist-item">
+            <input type="checkbox" name="selectedItems" value="{{.ID}}">
+            <span>{{.ProductName}}</span>
+            <span>{{.ProductPrice}}</span>
+            <form action="/updateWishlistQuantity/{{.IdWishlist}}" method="POST">
+                <input type="hidden" name="productId" value="{{.IdProduct}}">
+                <input type="hidden" name="quantity" value="{{min .Quantity 1}}">
+                <button type="submit">-</button>
+            </form>
+            <span>{{.Quantity}}</span>
+            <form action="/updateWishlistQuantity/{{.IdWishlist}}" method="POST">
+                <input type="hidden" name="productId" value="{{.IdProduct}}">
+                <input type="hidden" name="quantity" value="{{plus .Quantity 1}}">
+                <button type="submit">+</button>
+            </form>
+            <span>{{mul .ProductPrice .Quantity}}</span>
+        </div>
+    {{end}}
+{{/*    <button type="submit">Checkout</button>*/}}
+{{/*</form>*/}}
+
+{{template "partials/bot" .}}
