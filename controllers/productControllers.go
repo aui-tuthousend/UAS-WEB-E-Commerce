@@ -37,10 +37,7 @@ func ViewProduct(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).SendString("Failed to unmarshal image paths")
 	}
 
-	return c.Render("produk/viewProduct", fiber.Map{
-		"product": product,
-		"photos":  imagePaths,
-	})
+	return c.Render("produk/viewProduct", fiber.Map{"product": product, "photos": imagePaths})
 }
 
 func StoreProduct(c *fiber.Ctx) error {

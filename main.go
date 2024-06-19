@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 	"os"
+	"web_uas/helpers"
 	"web_uas/initializers"
 )
 
@@ -16,6 +17,9 @@ func init() {
 
 func main() {
 	engine := html.New("./views", ".tmpl")
+	engine.AddFunc("mul", helpers.Mul)
+	engine.AddFunc("plus", helpers.Plus)
+	engine.AddFunc("min", helpers.Min)
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
