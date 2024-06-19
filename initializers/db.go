@@ -26,8 +26,12 @@ func ConnectDB() {
 func SyncDB() {
 	DB.AutoMigrate(&models.User{})
 	DB.AutoMigrate(&models.Product{})
+	DB.AutoMigrate(&models.PhotoProduct{})
 	DB.AutoMigrate(&models.WishList{})
 	DB.AutoMigrate(&models.DetailWishlist{})
+	DB.AutoMigrate(&models.ProductCopy{})
+	DB.AutoMigrate(&models.Transaction{})
+	DB.AutoMigrate(&models.DetailTransaction{})
 }
 
 func GetDB() *gorm.DB {
