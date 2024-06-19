@@ -1,9 +1,8 @@
 package controllers
 
 import (
-	"encoding/json"
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/datatypes"
+	"log"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -32,15 +31,17 @@ func ViewProduct(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).SendString("Product not found")
 	}
 
-	var imagePaths []string
-	if err := json.Unmarshal(product.ImagePaths, &imagePaths); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString("Failed to unmarshal image paths")
-	}
+	var photos []models.PhotoProduct
+	query := initializers.GetDB().Model(&models.PhotoProduct{}).Where("id_product = ?", product.ID)
 
-	return c.Render("produk/viewProduct", fiber.Map{"product": product, "photos": imagePaths})
+	if err := query.Find(&photos).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).SendString("No photos found with the given conditions")
+	}
+	return c.Render("produk/viewProduct", fiber.Map{"product": product, "photos": photos})
 }
 
 func StoreProduct(c *fiber.Ctx) error {
+	const MaxFileSize = 10 * 1024 * 1024
 
 	name := c.FormValue("name")
 	desc := c.FormValue("desc")
@@ -51,30 +52,18 @@ func StoreProduct(c *fiber.Ctx) error {
 	price, err := strconv.Atoi(pric)
 
 	file, err := c.FormFile("image")
+
+	if file.Size > MaxFileSize {
+		return c.Status(fiber.StatusRequestEntityTooLarge).SendString("File size exceeds the limit")
+	}
+
 	if err != nil {
 		return err
 	}
 	imagePath := filepath.Join("images/cover", file.Filename)
+	imagePath = strings.ReplaceAll(imagePath, "\\", "/")
 	if err := c.SaveFile(file, imagePath); err != nil {
 		return err
-	}
-
-	form, err := c.MultipartForm()
-	files := form.File["images"]
-	var imagePathsPhotos []string
-
-	for _, file := range files {
-		filePath := filepath.Join("images/productPhotos", file.Filename)
-		imagePath = strings.ReplaceAll(imagePath, "\\", "/")
-		if err := c.SaveFile(file, filePath); err != nil {
-			return c.Status(fiber.StatusInternalServerError).SendString("Failed to save file")
-		}
-		imagePathsPhotos = append(imagePathsPhotos, filePath)
-	}
-
-	imagePathsJSON, err := json.Marshal(imagePathsPhotos)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString("Failed to marshal image paths")
 	}
 
 	newProduct := models.Product{
@@ -83,11 +72,39 @@ func StoreProduct(c *fiber.Ctx) error {
 		ProductImageCover:  imagePath,
 		ProductStock:       stok,
 		ProductPrice:       price,
-		ImagePaths:         datatypes.JSON(imagePathsJSON),
 	}
 
 	if err := initializers.GetDB().Create(&newProduct).Error; err != nil {
 		return err
+	}
+
+	form, err := c.MultipartForm()
+	if err != nil {
+		log.Println("Error retrieving multipart form:", err)
+		return c.Status(fiber.StatusBadRequest).SendString("Failed to parse form")
+	}
+	files := form.File["images"]
+
+	for _, file := range files {
+
+		if file.Size > MaxFileSize {
+			return c.Status(fiber.StatusRequestEntityTooLarge).SendString("File size exceeds the limit")
+		}
+
+		filePath := filepath.Join("images/productPhotos", file.Filename)
+		filePath = strings.ReplaceAll(filePath, "\\", "/")
+		if err := c.SaveFile(file, filePath); err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString("Failed to save file")
+		}
+
+		newPProduct := models.PhotoProduct{
+			IdProduct: newProduct.ID,
+			ImgPath:   filePath,
+		}
+
+		if err := initializers.GetDB().Create(&newPProduct).Error; err != nil {
+			return err
+		}
 	}
 
 	return c.Redirect("/")
