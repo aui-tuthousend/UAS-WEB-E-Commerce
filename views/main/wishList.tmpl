@@ -1,9 +1,16 @@
 {{template "partials/top" .}}
 
+<style>
+    .gambar{
+        width: 10rem;
+        height: 8rem;
+    }
+</style>
 
 {{range .wishlists}}
     <div class="wishlist-item">
         <input type="checkbox" name="selectedItems" value="{{.ID}}" class="item-checkbox">
+        <img src="/{{.ProductImage}}" alt="" class="img gambar">
         <span>{{.ProductName}}</span>
         <span>{{.ProductPrice}}</span>
         <form action="/updateWishlistQuantity/{{.IdWishlist}}" method="POST">

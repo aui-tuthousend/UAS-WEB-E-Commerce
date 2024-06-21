@@ -21,7 +21,8 @@ func main() {
 	engine.AddFunc("plus", helpers.Plus)
 	engine.AddFunc("min", helpers.Min)
 	app := fiber.New(fiber.Config{
-		Views: engine,
+		Views:     engine,
+		BodyLimit: 10 * 1024 * 1024,
 	})
 
 	app.Static("/", "./public")
