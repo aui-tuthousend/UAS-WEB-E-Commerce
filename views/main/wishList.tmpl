@@ -16,7 +16,11 @@
         <form action="/updateWishlistQuantity/{{.IdWishlist}}" method="POST">
             <input type="hidden" name="productId" value="{{.IdProduct}}">
             <input type="hidden" name="quantity" value="{{min .Quantity 1}}">
-            <button type="submit">-</button>
+            {{if eq .Quantity 1}}
+                <button type="submit" onclick="return confirm('delete from cart?')">-</button>
+            {{else}}
+                <button type="submit">-</button>
+            {{end}}
         </form>
         <span id="counter-value-{{.ID}}">{{.Quantity}}</span>
         <form action="/updateWishlistQuantity/{{.IdWishlist}}" method="POST">

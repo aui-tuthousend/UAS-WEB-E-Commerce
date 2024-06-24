@@ -20,6 +20,23 @@ func InsertIntoWishlist(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("Invalid product ID")
 	}
 
+	var wislis []models.DetailWishlist
+	if err := initializers.GetDB().Where("id_wishlist = ?", uint(idW)).Find(&wislis).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString("Failed to retrieve wishlist")
+	}
+
+	for _, wis := range wislis {
+		if wis.IdProduct == uint(idB) {
+			wis.Quantity += 1
+
+			if err := initializers.GetDB().Save(&wis).Error; err != nil {
+				return c.Status(fiber.StatusInternalServerError).SendString("Failed to update quantity")
+			}
+
+			return c.Redirect("/")
+		}
+	}
+
 	var product models.Product
 	if err := initializers.GetDB().First(&product, uint(idB)).Error; err != nil {
 		return c.Status(fiber.StatusNotFound).SendString("Product not found")
@@ -72,17 +89,29 @@ func UpdateWishlistQ(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("Invalid quantity value")
 	}
 
-	var wishlistItem models.DetailWishlist
-	if err := initializers.GetDB().Where("id_product = ?", uint(productIDUint)).First(&wishlistItem).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).SendString("Wishlist item not found")
-	}
-
-	wishlistItem.Quantity = quantityInt
-
-	if err := initializers.GetDB().Save(&wishlistItem).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString("Failed to update quantity")
-	}
-
 	referer := c.Get("Referer", "/")
+	if quantityInt == 0 {
+		var wishlistItem models.DetailWishlist
+		if err := initializers.GetDB().Where("id_product = ?", uint(productIDUint)).First(&wishlistItem).Error; err != nil {
+			return c.Status(fiber.StatusNotFound).SendString("Wishlist item not found")
+		}
+
+		if err := initializers.GetDB().Delete(&wishlistItem).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString("Failed to update quantity")
+		}
+	} else {
+
+		var wishlistItem models.DetailWishlist
+		if err := initializers.GetDB().Where("id_product = ?", uint(productIDUint)).First(&wishlistItem).Error; err != nil {
+			return c.Status(fiber.StatusNotFound).SendString("Wishlist item not found")
+		}
+
+		wishlistItem.Quantity = quantityInt
+
+		if err := initializers.GetDB().Save(&wishlistItem).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString("Failed to update quantity")
+		}
+	}
+
 	return c.Redirect(referer)
 }
