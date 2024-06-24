@@ -12,6 +12,70 @@ type CheckoutPayload struct {
 	SelectedItems []string `json:"selectedItems"`
 }
 
+func ShowTransaction(c *fiber.Ctx) error {
+	idU := c.Params("idUser")
+	idUser, err := strconv.ParseUint(idU, 10, 32)
+	if err != nil {
+		return c.SendString("asdasdsad")
+	}
+
+	var transactions []models.Transaction
+	query := initializers.GetDB().Model(&models.Transaction{}).Where("id_user = ?", uint(idUser))
+	if err := query.Find(&transactions).Error; err != nil {
+		return c.SendString("tidak adada")
+	}
+
+	var products []models.ProductCopy
+	if err := initializers.GetDB().Find(&products).Error; err != nil {
+		return err
+	}
+
+	var ditelTrans []models.DetailTransaction
+	for _, trans := range transactions {
+		query2 := initializers.GetDB().Model(&models.DetailTransaction{}).Where("id_transaction = ?", trans.ID)
+		if err := query2.Find(&ditelTrans).Error; err != nil {
+			return err
+		}
+	}
+
+	type pivot struct {
+		DT models.DetailTransaction
+		PC models.ProductCopy
+	}
+
+	type cooked struct {
+		Transaksi models.Transaction
+		Ditel     []pivot
+	}
+
+	var served []cooked
+
+	for _, tra := range transactions {
+		newCook := cooked{
+			Transaksi: tra,
+		}
+
+		for _, dit := range ditelTrans {
+			if dit.IdTransaction == tra.ID {
+				newPivot := pivot{
+					DT: dit,
+				}
+
+				for _, pc := range products {
+					if dit.IdProductCopies == pc.ID {
+						newPivot.PC = pc
+					}
+				}
+
+				newCook.Ditel = append(newCook.Ditel, newPivot)
+			}
+		}
+
+		served = append(served, newCook)
+	}
+	return c.Render("main/viewTransaction", fiber.Map{"cooked": served})
+}
+
 func Checkout(c *fiber.Ctx) error {
 	var payload CheckoutPayload
 

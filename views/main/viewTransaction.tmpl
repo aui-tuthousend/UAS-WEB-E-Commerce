@@ -1,0 +1,16 @@
+{{template "partials/top" .}}
+
+<style>
+    .gambar{
+        width: 10rem;
+        height: 8rem;
+    }
+</style>
+
+{{range .cooked}}
+<p>{{.Transaksi.ID}}</p>
+    {{range .Ditel}}
+        <p>{{.DT.Quantity}}</p>
+        <img class="img gambar" src="/{{.PC.ProductImageCover}}" alt="">
+    {{end}}
+{{end}}
