@@ -22,5 +22,24 @@
 
 .c1{
     display: flex;
-    gap: 0;
+    background: yellow;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.produk{
+    display: flex;
+    flex-direction: column;
+}
+
+.aa{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px 0 2px;
+}
+
+.gambar{
+    width: 10rem;
+    height: 8rem;
 }

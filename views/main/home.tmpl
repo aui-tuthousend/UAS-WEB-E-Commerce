@@ -1,31 +1,32 @@
 {{template "partials/top" .}}
 
 <style>
-    .gambar{
-        width: 10rem;
-        height: 8rem;
-    }
 
-    .c1{
-        padding: 5rem;
-    }
+
+
 </style>
 <a href="createProduct">create</a>
 <a href="/wishList/1">cart</a>
 <a href="/history/1">history</a>
-{{range .products }}
-    <div class="c1">
-        <img src="{{.ProductImageCover}}" alt="" class="img gambar">
-        <h1>{{.ProductName}}</h1>
-        <p>{{.ProductDescription}}</p>
-        <h2>{{.ProductPrice}}</h2>
-        <h2>{{.ProductStock}}</h2>
-        <a href="/produk/{{.ID}}">view produk</a>
-        <form action="/insertWishlist/1/{{.ID}}" method="POST" style="display:inline;">
-            <button type="submit">🛒</button>
-        </form>
-    </div>
+<div class="c1">
+    {{range .products }}
+            <div class="produk">
+                <a href="/produk/{{.ID}}">
+                    <img src="{{.ProductImageCover}}" alt="" class="img gambar">
+                </a>
+                <div class="aa">
+                    <h1>{{.ProductName}}</h1>
+                    <form action="/insertWishlist/1/{{.ID}}" method="POST" style="display:inline;">
+                        <button type="submit">🛒</button>
+                    </form>
+                </div>
+                <p>{{.ProductDescription}}</p>
+                <h2>$ {{.ProductPrice}} </h2>
+    {{/*            <h2>{{.ProductStock}}</h2>*/}}
 
-{{end}}
+            </div>
+
+    {{end}}
+</div>
 
 {{template "partials/bot" .}}

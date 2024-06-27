@@ -8,6 +8,8 @@
     }
 </style>
 
+<h1>{{.product.ProductName}}</h1>
+<h3>{{.product.ProductDescription}}</h3>
 {{range .photos}}
     <img src="/{{.ImgPath}}" alt="" class="img gambar">
 {{end}}
