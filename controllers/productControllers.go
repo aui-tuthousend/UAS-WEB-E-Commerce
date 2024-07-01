@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"path/filepath"
 	"strconv"
@@ -10,13 +11,24 @@ import (
 	"web_uas/models"
 )
 
+func HashId(id string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(id), 14)
+	return string(bytes), err
+}
+
 func ShowProduct(c *fiber.Ctx) error {
 
 	var products []models.Product
 	if err := initializers.GetDB().Find(&products).Error; err != nil {
 		return err
 	}
-	return c.Render("main/home", fiber.Map{"products": products})
+
+	sess, err := Store.Get(c)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
+	}
+	idUser := sess.Get("IDuser").(uint)
+	return c.Render("main/home", fiber.Map{"products": products, "idUser": idUser})
 }
 
 func ViewProduct(c *fiber.Ctx) error {

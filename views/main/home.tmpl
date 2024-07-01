@@ -1,13 +1,9 @@
 {{template "partials/top" .}}
 
-<style>
-
-
-
-</style>
 <a href="createProduct">create</a>
-<a href="/wishList/1">cart</a>
-<a href="/history/1">history</a>
+<a href="/wishList/{{.idUser}}">cart</a>
+<a href="/history/{{.idUser}}">history</a>
+<a href="/logout">Log Out</a>
 <div class="c1">
     {{range .products }}
             <div class="produk">
