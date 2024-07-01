@@ -1,10 +1,9 @@
 package controllers
 
 import (
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/session"
 	"golang.org/x/crypto/bcrypt"
-	"time"
 	"web_uas/initializers"
 	"web_uas/models"
 )
@@ -14,41 +13,40 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-var jwtSecret = []byte("ikamers")
-
-func GenerateJWT(user models.User) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": user.ID,
-		"exp":     time.Now().Add(time.Hour * 72).Unix(),
-	})
-
-	return token.SignedString(jwtSecret)
-}
+var Store = session.New()
 
 func Login(c *fiber.Ctx) error {
-	type Request struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
-
-	var req Request
-	if err := c.BodyParser(&req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
-	}
+	uname := c.FormValue("username")
+	pass := c.FormValue("password")
 
 	var user models.User
-	if err := initializers.GetDB().Where("email = ?", req.Email).First(&user).Error; err != nil {
+	if err := initializers.GetDB().Where("username = ?", uname).First(&user).Error; err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid email or password"})
 	}
 
-	if !CheckPasswordHash(req.Password, user.Password) {
+	if !CheckPasswordHash(pass, user.Password) {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid email or password"})
-	}
+	} else {
+		sess, err := Store.Get(c)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
+		}
 
-	token, err := GenerateJWT(user)
+		sess.Set("IDuser", user.ID)
+		if err := sess.Save(); err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
+		}
+
+		return c.Redirect("/home")
+	}
+}
+
+func LogOut(c *fiber.Ctx) error {
+	sess, err := Store.Get(c)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to generate token"})
+		return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
 	}
 
-	return c.JSON(fiber.Map{"token": token})
+	sess.Destroy()
+	return c.Redirect("/login")
 }
