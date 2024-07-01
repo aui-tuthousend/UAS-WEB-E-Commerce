@@ -1,0 +1,57 @@
+{{template "partials/top" .}}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .registration-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        text-align: center;
+    }
+    .registration-container h2 {
+        margin-bottom: 20px;
+    }
+    .registration-container input[type="text"],
+    .registration-container input[type="email"],
+    .registration-container input[type="password"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .registration-container button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+    .registration-container button:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<div class="registration-container">
+    <h2>Register</h2>
+    <form action="/register" method="post">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+{{/*        <input type="password" name="confirm_password" placeholder="Confirm Password" required>*/}}
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+{{template "partials/bot" .}}

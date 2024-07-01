@@ -15,7 +15,6 @@ func HashPassword(password string) (string, error) {
 func Register(c *fiber.Ctx) error {
 	type Request struct {
 		Username string `json:"username"`
-		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
 
@@ -31,7 +30,6 @@ func Register(c *fiber.Ctx) error {
 
 	user := models.User{
 		Username: req.Username,
-		Email:    req.Email,
 		Password: hashedPassword,
 	}
 
@@ -48,5 +46,5 @@ func Register(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create wishlist"})
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(user)
+	return c.Redirect("/")
 }
