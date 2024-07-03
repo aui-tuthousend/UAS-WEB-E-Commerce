@@ -48,5 +48,5 @@ func LogOut(c *fiber.Ctx) error {
 	}
 
 	sess.Destroy()
-	return c.Redirect("/login")
+	return c.Redirect("/")
 }
