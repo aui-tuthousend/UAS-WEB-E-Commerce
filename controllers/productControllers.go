@@ -31,6 +31,16 @@ func ShowProduct(c *fiber.Ctx) error {
 	return c.Render("main/home", fiber.Map{"products": products, "idUser": idUser})
 }
 
+func Landing(c *fiber.Ctx) error {
+
+	var products []models.Product
+	if err := initializers.GetDB().Find(&products).Error; err != nil {
+		return err
+	}
+
+	return c.Render("main/landing", fiber.Map{"products": products})
+}
+
 func ViewProduct(c *fiber.Ctx) error {
 	idParam := c.Params("id")
 	id, err := strconv.ParseUint(idParam, 10, 32)
