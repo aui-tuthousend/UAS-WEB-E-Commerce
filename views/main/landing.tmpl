@@ -1,0 +1,25 @@
+{{template "partials/top" .}}
+<a href="/login">Login</a>
+<div class="c1">
+    {{range .products }}
+        <div class="produk">
+            <a href="/produk/{{.ID}}">
+                <img src="{{.ProductImageCover}}" alt="" class="img gambar">
+            </a>
+            <div class="aa">
+                <h1>{{.ProductName}}</h1>
+                <form action="/insertWishlist/1/{{.ID}}" method="POST" style="display:inline;">
+                    <button type="submit">🛒</button>
+                </form>
+            </div>
+            <p>{{.ProductDescription}}</p>
+            <h2>$ {{.ProductPrice}} </h2>
+            {{/*            <h2>{{.ProductStock}}</h2>*/}}
+        </div>
+
+    {{end}}
+
+{{/*    <h1>Heloo, <script>alert('ahaha')</script></h1>*/}}
+</div>
+
+{{template "partials/bot" .}}

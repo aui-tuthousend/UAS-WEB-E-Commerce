@@ -12,7 +12,7 @@
                 </a>
                 <div class="aa">
                     <h1>{{.ProductName}}</h1>
-                    <form action="/insertWishlist/1/{{.ID}}" method="POST" style="display:inline;">
+                    <form action="/insertWishlist/{{$.idUser}}/{{.ID}}" method="POST" style="display:inline;">
                         <button type="submit">🛒</button>
                     </form>
                 </div>
