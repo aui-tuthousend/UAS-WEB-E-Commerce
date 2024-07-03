@@ -31,11 +31,8 @@ func ShowTransaction(c *fiber.Ctx) error {
 	}
 
 	var ditelTrans []models.DetailTransaction
-	for _, trans := range transactions {
-		query2 := initializers.GetDB().Model(&models.DetailTransaction{}).Where("id_transaction = ?", trans.ID)
-		if err := query2.Find(&ditelTrans).Error; err != nil {
-			return err
-		}
+	if err := initializers.GetDB().Find(&ditelTrans).Error; err != nil {
+		return err
 	}
 
 	type pivot struct {
@@ -88,8 +85,13 @@ func Checkout(c *fiber.Ctx) error {
 
 	total := 0
 
+	sess, err := Store.Get(c)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
+	}
+
 	newTransaction := models.Transaction{
-		IdUser: 1,
+		IdUser: sess.Get("IDuser").(uint),
 	}
 
 	if err := initializers.GetDB().Create(&newTransaction).Error; err != nil {

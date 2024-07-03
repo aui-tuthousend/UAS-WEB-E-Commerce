@@ -8,9 +8,10 @@
 </style>
 
 {{range .cooked}}
-<p>{{.Transaksi.ID}}</p>
+<p>id transaksi: {{.Transaksi.ID}}</p>
     {{range .Ditel}}
-        <p>{{.DT.Quantity}}</p>
+{{/*        <h1>{{.DT.ID}}</h1>*/}}
+        <p>kuantiti: {{.DT.Quantity}}</p>
         <img class="img gambar" src="/{{.PC.ProductImageCover}}" alt="">
     {{end}}
 {{end}}
