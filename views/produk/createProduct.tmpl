@@ -8,20 +8,41 @@
     <label for="">Description:</label>
     <textarea name="desc" required></textarea>
     <br>
-    <label for="description">Stok:</label>
+    <label for="">Stok:</label>
     <input type="number" name="stok" required>
     <br>
-    <label for="description">Price:</label>
+    <label for="">Categories</label>
+    <select style="width: 10rem;" name="category" id="category">
+        <option value="null">Select Categories</option>
+        {{range .categories}}
+        <option value="{{ .ID}}">{{ .CategoryName}}</option>
+        {{end}}
+    </select>
+    <br>
+    <label for="">Price:</label>
     <input type="number" name="price" required>
     <br>
-        <label for="image">Image:</label>
+        <label for="image">Image Display:</label>
         <input type="file" id="image" name="image" required>
     <br>
-    <label for="images">Images:</label>
+    <label for="images">Image Details:</label>
     <input type="file" id="images" name="images" multiple>
     <br>
     <button type="submit">Create Post</button>
 </form>
+
+<script>
+    function validateForm() {
+        var selectedUser = document.getElementById("category");
+
+        if (selectedUser.value == "null") {
+            alert("Choose Product Category :D");
+            return false;
+        }
+
+        return true;
+    }
+</script>
 
 {{template "partials/bot" .}}
 

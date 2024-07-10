@@ -12,6 +12,8 @@ type Product struct {
 	ProductImageCover  string
 	ProductStock       int
 	ProductPrice       int
+	CategoryId         uint
+	Sold               int       `gorm:"default:0"`
 	CreatedAt          time.Time `gorm:"type:datetime;not null"`
 	UpdatedAt          time.Time `gorm:"type:datetime;not null"`
 }

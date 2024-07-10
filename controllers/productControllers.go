@@ -69,9 +69,15 @@ func StoreProduct(c *fiber.Ctx) error {
 	desc := c.FormValue("desc")
 	sto := c.FormValue("stok")
 	pric := c.FormValue("price")
+	cat := c.FormValue("category")
 
 	stok, err := strconv.Atoi(sto)
 	price, err := strconv.Atoi(pric)
+
+	id, err := strconv.ParseUint(cat, 10, 32)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Invalid product ID")
+	}
 
 	file, err := c.FormFile("image")
 
@@ -94,6 +100,8 @@ func StoreProduct(c *fiber.Ctx) error {
 		ProductImageCover:  imagePath,
 		ProductStock:       stok,
 		ProductPrice:       price,
+		CategoryId:         uint(id),
+		Sold:               0,
 	}
 
 	if err := initializers.GetDB().Create(&newProduct).Error; err != nil {
@@ -129,5 +137,18 @@ func StoreProduct(c *fiber.Ctx) error {
 		}
 	}
 
+	return c.Redirect("/")
+}
+
+func AddKategori(c *fiber.Ctx) error {
+	kategori := c.FormValue("kategori")
+
+	newKategori := models.Category{
+		CategoryName: kategori,
+	}
+
+	if err := initializers.GetDB().Create(&newKategori).Error; err != nil {
+		return err
+	}
 	return c.Redirect("/")
 }
