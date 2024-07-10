@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"web_uas/controllers"
+	"web_uas/initializers"
+	"web_uas/models"
 )
 
 func SetupRoutes(app *fiber.App) {
@@ -53,8 +55,18 @@ func SetupRoutes(app *fiber.App) {
 	app.Post("/checkout", m, controllers.Checkout)
 	app.Post("/updateWishlistQuantity/:idDQ", m, controllers.UpdateWishlistQ)
 
+	//app.Get("/createCategory", m, func(c *fiber.Ctx) error { return c.Render("produk/createCategory", fiber.Map{}) })
+	app.Post("/storeCategory", m, controllers.AddKategori)
+
 	app.Post("/storeProduct", m, controllers.StoreProduct)
-	app.Get("/createProduct", m, func(c *fiber.Ctx) error { return c.Render("produk/createProduct", fiber.Map{}) })
+	app.Get("/createProduct", m, func(c *fiber.Ctx) error {
+		var categories []models.Category
+		if err := initializers.GetDB().Find(&categories).Error; err != nil {
+			return err
+		}
+
+		return c.Render("produk/createProduct", fiber.Map{"categories": categories})
+	})
 	app.Get("/home", m, controllers.ShowProduct)
 	app.Get("/produk/:id", controllers.ViewProduct)
 

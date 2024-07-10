@@ -3,6 +3,11 @@
 <a href="createProduct">create</a>
 <a href="/wishList/{{.idUser}}">cart</a>
 <a href="/history/{{.idUser}}">history</a>
+<br>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">
+    Tambah+
+</button>
+<br>
 <a href="/logout">Log Out</a>
 <div class="c1">
     {{range .products }}
@@ -12,17 +17,52 @@
                 </a>
                 <div class="aa">
                     <h1>{{.ProductName}}</h1>
+                    {{if eq .ProductStock 0}}
+                        <p>sold out</p>
+                    {{else}}
                     <form action="/insertWishlist/{{$.idUser}}/{{.ID}}" method="POST" style="display:inline;">
                         <button type="submit">🛒</button>
                     </form>
+                    {{end}}
                 </div>
                 <p>{{.ProductDescription}}</p>
                 <h2>$ {{.ProductPrice}} </h2>
-    {{/*            <h2>{{.ProductStock}}</h2>*/}}
+                <h2>{{.Sold}}</h2>
 
             </div>
 
     {{end}}
 </div>
+
+
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Add Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/storeCategory" method="POST">
+                    <input type="hidden" id="edit-id" name="idT">
+                    <div class="form-group">
+                        <label for="edit-idB">Categoy</label>
+                        <input type="text" class="form-control" name="kategori"  required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 {{template "partials/bot" .}}
