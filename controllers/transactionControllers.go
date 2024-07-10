@@ -143,6 +143,13 @@ func Checkout(c *fiber.Ctx) error {
 		if err := initializers.GetDB().Delete(&models.DetailWishlist{}, DWislis.ID).Error; err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString("Failed to delete product")
 		}
+
+		productReal.Sold += DWislis.Quantity
+		productReal.ProductStock -= DWislis.Quantity
+		if err := initializers.GetDB().Save(&productReal).Error; err != nil {
+			return err
+		}
+
 	}
 
 	newTransaction.TotalPrice = total
