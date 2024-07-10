@@ -25,6 +25,7 @@ func ConnectDB() {
 
 func SyncDB() {
 	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.Category{})
 	DB.AutoMigrate(&models.Product{})
 	DB.AutoMigrate(&models.PhotoProduct{})
 	DB.AutoMigrate(&models.WishList{})
