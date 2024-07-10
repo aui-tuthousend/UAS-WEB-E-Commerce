@@ -12,6 +12,7 @@ type ProductCopy struct {
 	ProductImageCover  string
 	Quantity           int
 	ProductPrice       int
+	CategoryId         uint
 	CreatedAt          time.Time `gorm:"type:datetime;not null"`
 	UpdatedAt          time.Time `gorm:"type:datetime;not null"`
 }
