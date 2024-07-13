@@ -1,0 +1,62 @@
+.free{
+    width: 100vw;
+    height: 2rem;
+    background: black;
+    color: white;
+    padding: 0 2rem 0 2rem;
+}
+
+.h1{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10rem;
+    padding: 2rem;
+
+}
+
+.bx{
+    font-size: 2rem;
+}
+
+.input {
+    border: none;
+    border-bottom: 2px solid #000; /* Warna garis bawah */
+    padding: 5px;
+    outline: none;
+    width: 8rem;
+
+    font-size: 1rem;
+}
+
+.h2{
+    position: relative;
+    gap: 2rem;
+}
+
+.new {
+    position: relative; /* Perlu ditambahkan untuk mengatur posisi .drop relatif terhadap .new */
+}
+
+.drop{
+    position: absolute;
+    opacity: 0;
+    width: 100vw;
+    height: 17rem;
+    background: white;
+    padding: 2rem 20% 7rem;
+    transition: opacity 0.3s ease;
+    top: 28;
+    left: 0;
+}
+
+.show {
+    opacity: 1;
+}
+
+.pick{
+    width: 13rem;
+    height: 13rem;
+    background: black;
+}

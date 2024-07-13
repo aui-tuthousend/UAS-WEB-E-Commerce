@@ -1,57 +1,89 @@
-{{template "partials/top" .}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrasi</title>
+    <link rel="stylesheet" type="text/css" href="/css/regis.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/template.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+</head>
+<body>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f2f2f2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
-    .registration-container {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 300px;
-        text-align: center;
-    }
-    .registration-container h2 {
-        margin-bottom: 20px;
-    }
-    .registration-container input[type="text"],
-    .registration-container input[type="email"],
-    .registration-container input[type="password"] {
-        width: calc(100% - 22px);
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    .registration-container button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        width: 100%;
-    }
-    .registration-container button:hover {
-        background-color: #45a049;
-    }
-</style>
+<div class="free row-sb-c">
+    <div style="color: black;">aaaaaaaa</div>
+    <p>Free Shipping! On All Orders.</p>
+    <strong>STORE LOCATOR</strong>
+</div>
+<div class="h1 row-sb">
+    <div class="row" style="gap: 1rem">
+        <p>sign in</p>
+        <p>or</p>
+        <p>join now</p>
+    </div>
+    <div>
+        <a href="index.html">
+            <h1>STEVE MADDEN</h1>
+        </a>
+    </div>
 
-<div class="registration-container">
-    <h2>Register</h2>
-    <form action="/register" method="post">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-{{/*        <input type="password" name="confirm_password" placeholder="Confirm Password" required>*/}}
-        <button type="submit">Register</button>
-    </form>
+    <div class="row-c">
+        <i class='bx bx-search'></i>
+        <input type="text" class="input" placeholder="Search">
+        <a href="/login">
+            <i class='bx bx-shopping-bag' ></i>
+        </a>
+    </div>
 </div>
 
-{{template "partials/bot" .}}
+<div class="h2 row-c">
+    <h3>New & Now</h3>
+    <h3>Shoes</h3>
+    <h3>Handbags</h3>
+    <h3>Sale</h3>
+</div>
+
+<div class="r1 col-c">
+    <div class="col-c">
+        <h3><strong>HEY FRIEND!</strong></h3>
+        <p>It looks like you’re new around here,<br>
+            we need a bit more info...</p>
+    </div>
+
+    <form action="/register" method="post">
+    <div class="col-c" style="gap: 1rem">
+        <div class="form col-sb">
+            <h3>USERNAME*</h3>
+            <input class="re" type="text" name="username" placeholder="username" required>
+        </div>
+
+        <div class="form row-sb">
+            <div class="name">
+                <h3>FIRST NAME*</h3>
+                <input class="re" type="text" name="fn" placeholder="first name">
+            </div>
+            <div class="name">
+                <h3>LAST NAME*</h3>
+                <input class="re" type="text" name="ln" placeholder="last name">
+            </div>
+        </div>
+
+        <div class="form col-sb">
+            <h3>ENTER A PASSWORD*</h3>
+            <input class="re" type="password" name="password" placeholder="password" required>
+        </div>
+
+        <div class="cek row-fs-fs">
+            <input type="checkbox">
+            <p>I agree on terms and conditions</p>
+        </div>
+        <button type="submit" class="con col-c"><h1>CONTINUE</h1></button>
+    </div>
+    </form>
+
+    <p>Already registered? <a href="/login"><strong>LOGIN</strong></a></p>
+</div>
+</body>
+</html>

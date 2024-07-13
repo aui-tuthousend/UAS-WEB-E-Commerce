@@ -1,25 +1,111 @@
-{{template "partials/top" .}}
-<a href="/login">Login</a>
-<div class="c1">
-    {{range .products }}
-        <div class="produk">
-            <a href="/produk/{{.ID}}">
-                <img src="{{.ProductImageCover}}" alt="" class="img gambar">
-            </a>
-            <div class="aa">
-                <h1>{{.ProductName}}</h1>
-                <form action="/insertWishlist/1/{{.ID}}" method="POST" style="display:inline;">
-                    <button type="submit">🛒</button>
-                </form>
-            </div>
-            <p>{{.ProductDescription}}</p>
-            <h2>$ {{.ProductPrice}} </h2>
-            {{/*            <h2>{{.ProductStock}}</h2>*/}}
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SHOP NOW</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/template.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
-    {{end}}
+</head>
+<body>
+<div class="free row-sb-c">
+    <div style="color: black;">aaaaaaaa</div>
+    <p>Free Shipping! On All Orders.</p>
+    <strong>STORE LOCATOR</strong>
+</div>
+<div class="h1 row-sb">
+    <div class="row" style="gap: 1rem">
+        <a href="/login">
+            <p>sign in</p>
+        </a>
+        <p>or</p>
+        <a href="/regis">
+            <p>join now</p>
+        </a>
+    </div>
+    <div>
+        <h1>STEVE MADDEN</h1>
+    </div>
 
-{{/*    <h1>Heloo, <script>alert('ahaha')</script></h1>*/}}
+    <div class="row-c">
+        <i class='bx bx-search'></i>
+        <input type="text" class="input" placeholder="Search">
+        <a href="/login">
+            <i class='bx bx-shopping-bag' ></i>
+        </a>
+    </div>
 </div>
 
-{{template "partials/bot" .}}
+<div class="h2 row-c">
+    <h3 class="new">New & Now</h3>
+    <h3>Shoes</h3>
+    <h3>Handbags</h3>
+    <h3>Sale</h3>
+</div>
+
+<div class="drop row-sb">
+    <div class="col-sb">
+        <h3>NEW ARRIVALS</h3>
+        <p>Shop All</p>
+        <p>Shoes</p>
+        <p>Handbags</p>
+    </div>
+    <div class="col-sb">
+        <h3>BEST SELLERS</h3>
+        <p>Shop All</p>
+        <p>Shoes</p>
+        <p>Handbags</p>
+    </div>
+    <div class="col-sb">
+        <h3>MUST HAVES</h3>
+        <p>Shop All</p>
+        <p>Shoes</p>
+        <p>Handbags</p>
+    </div>
+    <img src="/images/shoes1.jpg" alt="" class="pick img">
+</div>
+
+
+<div class="c3 col">
+    <img class="img pct" src="https://www.stevemadden.id/cdn/shop/files/SM-JUL_1-HOMEPAGE-Desktop.jpg?v=1719570728" alt="">
+    <br>
+    <img class="img pct" src="https://www.stevemadden.id/cdn/shop/files/SM-Homepage_1-3000x1400-Desktop2.jpg?v=1714566514" alt="">
+</div>
+
+
+<div class="c4 row-sb-c">
+    <a class="lin" href="/viewKategori/1">
+        <img class="img sc" src="https://www.stevemadden.id/cdn/shop/files/SM-SUMMER24-CAT-SANDALS.jpg?v=1714566780" alt="">
+    </a>
+    <a class="lin" href="/viewKategori/2">
+        <img class="img sc" src="https://www.stevemadden.id/cdn/shop/files/SM-SUMMER24-CAT-SHOES.jpg?v=1714566780" alt="">
+    </a>
+    <a class="lin" href="/viewKategori/3">
+        <img class="img sc" src="https://www.stevemadden.id/cdn/shop/files/SM-SUMMER24-CAT-HANDBAGS.jpg?v=1714566780" alt="">
+    </a>
+</div>
+</body>
+</html>
+
+<script>
+    document.querySelector('.new').addEventListener('mouseover', function() {
+        document.querySelector('.drop').classList.add('show');
+    });
+
+    document.querySelector('.new').addEventListener('mouseout', function() {
+        document.querySelector('.drop').classList.remove('show');
+    });
+
+    document.querySelector('.drop').addEventListener('mouseover', function() {
+        document.querySelector('.drop').classList.add('show');
+    });
+
+    document.querySelector('.drop').addEventListener('mouseout', function() {
+        document.querySelector('.drop').classList.remove('show');
+    });
+
+</script>

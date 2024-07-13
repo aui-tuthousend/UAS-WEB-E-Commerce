@@ -1,68 +1,105 @@
-{{template "partials/top" .}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop Now</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/template.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
-<a href="createProduct">create</a>
-<a href="/wishList/{{.idUser}}">cart</a>
-<a href="/history/{{.idUser}}">history</a>
-<br>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">
-    Tambah+
-</button>
-<br>
-<a href="/logout">Log Out</a>
-<div class="c1">
-    {{range .products }}
-            <div class="produk">
-                <a href="/produk/{{.ID}}">
-                    <img src="{{.ProductImageCover}}" alt="" class="img gambar">
-                </a>
-                <div class="aa">
-                    <h1>{{.ProductName}}</h1>
-                    {{if eq .ProductStock 0}}
-                        <p>sold out</p>
-                    {{else}}
-                    <form action="/insertWishlist/{{$.idUser}}/{{.ID}}" method="POST" style="display:inline;">
-                        <button type="submit">🛒</button>
-                    </form>
-                    {{end}}
-                </div>
-                <p>{{.ProductDescription}}</p>
-                <h2>$ {{.ProductPrice}} </h2>
-                <h2>{{.Sold}}</h2>
-
-            </div>
-
-    {{end}}
+</head>
+<body>
+<div class="free row-sb-c">
+    <div style="color: black;">aaaaaaaa</div>
+    <p>Free Shipping! On All Orders.</p>
+    <strong>STORE LOCATOR</strong>
 </div>
+<div class="h1 row-c">
+    <a href="/logout">
+        <p>logout</p>
+    </a>
+    <div>
+        <h1>STEVE MADDEN</h1>
+    </div>
 
-
-<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" >
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Add Category</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="/storeCategory" method="POST">
-                    <input type="hidden" id="edit-id" name="idT">
-                    <div class="form-group">
-                        <label for="edit-idB">Categoy</label>
-                        <input type="text" class="form-control" name="kategori"  required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class="row-c">
+        <i class='bx bx-search'></i>
+        <input type="text" class="input" placeholder="Search">
+        <a href="/wishList/{{.idUser}}">
+            <i class='bx bx-shopping-bag' ></i>
+        </a>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<div class="h2 row-c">
+    <h3 class="new">New & Now</h3>
+    <h3>Shoes</h3>
+    <h3>Handbags</h3>
+    <h3>Sale</h3>
+</div>
 
-{{template "partials/bot" .}}
+<div class="drop row-sb">
+    <div class="col-sb">
+        <h3>NEW ARRIVALS</h3>
+        <p>Shop All</p>
+        <p>Shoes</p>
+        <p>Handbags</p>
+    </div>
+    <div class="col-sb">
+        <h3>BEST SELLERS</h3>
+        <p>Shop All</p>
+        <p>Shoes</p>
+        <p>Handbags</p>
+    </div>
+    <div class="col-sb">
+        <h3>MUST HAVES</h3>
+        <p>Shop All</p>
+        <p>Shoes</p>
+        <p>Handbags</p>
+    </div>
+    <img src="/images/shoes1.jpg" alt="" class="pick img">
+</div>
+
+
+<div class="c3 col">
+    <img class="img pct" src="https://www.stevemadden.id/cdn/shop/files/SM-JUL_1-HOMEPAGE-Desktop.jpg?v=1719570728" alt="">
+    <br>
+    <img class="img pct" src="https://www.stevemadden.id/cdn/shop/files/SM-Homepage_1-3000x1400-Desktop2.jpg?v=1714566514" alt="">
+</div>
+
+
+<div class="c4 row-sb-c">
+    <a class="lin" href="/viewKategori/1">
+        <img class="img sc" src="https://www.stevemadden.id/cdn/shop/files/SM-SUMMER24-CAT-SANDALS.jpg?v=1714566780" alt="">
+    </a>
+    <a class="lin" href="/viewKategori/2">
+        <img class="img sc" src="https://www.stevemadden.id/cdn/shop/files/SM-SUMMER24-CAT-SHOES.jpg?v=1714566780" alt="">
+    </a>
+    <a class="lin" href="/viewKategori/3">
+        <img class="img sc" src="https://www.stevemadden.id/cdn/shop/files/SM-SUMMER24-CAT-HANDBAGS.jpg?v=1714566780" alt="">
+    </a>
+</div>
+</body>
+</html>
+
+<script>
+    document.querySelector('.new').addEventListener('mouseover', function() {
+        document.querySelector('.drop').classList.add('show');
+    });
+
+    document.querySelector('.new').addEventListener('mouseout', function() {
+        document.querySelector('.drop').classList.remove('show');
+    });
+
+    document.querySelector('.drop').addEventListener('mouseover', function() {
+        document.querySelector('.drop').classList.add('show');
+    });
+
+    document.querySelector('.drop').addEventListener('mouseout', function() {
+        document.querySelector('.drop').classList.remove('show');
+    });
+
+</script>
