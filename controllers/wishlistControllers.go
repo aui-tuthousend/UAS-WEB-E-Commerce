@@ -37,18 +37,10 @@ func InsertIntoWishlist(c *fiber.Ctx) error {
 		}
 	}
 
-	var product models.Product
-	if err := initializers.GetDB().First(&product, uint(idB)).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).SendString("Product not found")
-	}
-
 	newDetailWislis := models.DetailWishlist{
-		IdWishlist:   uint(idW),
-		IdProduct:    product.ID,
-		ProductImage: product.ProductImageCover,
-		ProductName:  product.ProductName,
-		ProductPrice: product.ProductPrice,
-		Quantity:     1,
+		IdWishlist: uint(idW),
+		IdProduct:  uint(idB),
+		Quantity:   1,
 	}
 
 	if err := initializers.GetDB().Create(&newDetailWislis).Error; err != nil {
@@ -72,7 +64,38 @@ func ShowWishList(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).SendString("No photos found with the given conditions")
 	}
 
-	return c.Render("main/wishList", fiber.Map{"wishlists": wislis})
+	type wish struct {
+		IdWishlist   uint
+		IdProduct    uint
+		ProductImage string
+		ProductName  string
+		ProductPrice int
+		ProductStock int
+		Quantity     int
+	}
+
+	var wisl []wish
+
+	for _, wi := range wislis {
+		var prod models.Product
+		if err := initializers.GetDB().First(&prod, wi.IdProduct).Error; err != nil {
+			return c.Status(fiber.StatusNotFound).SendString("Product not found")
+		}
+
+		newWish := wish{
+			IdWishlist:   wi.ID,
+			IdProduct:    wi.IdProduct,
+			ProductImage: prod.ProductImageCover,
+			ProductName:  prod.ProductName,
+			ProductPrice: prod.ProductPrice,
+			ProductStock: prod.ProductStock,
+			Quantity:     wi.Quantity,
+		}
+
+		wisl = append(wisl, newWish)
+	}
+
+	return c.Render("main/wishList", fiber.Map{"wishlists": wisl})
 }
 
 func UpdateWishlistQ(c *fiber.Ctx) error {

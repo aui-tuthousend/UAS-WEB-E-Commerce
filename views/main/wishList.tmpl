@@ -9,7 +9,11 @@
 
 {{range .wishlists}}
     <div class="wishlist-item">
-        <input type="checkbox" name="selectedItems" value="{{.ID}}" class="item-checkbox">
+        {{if eq .ProductStock 0}}
+        out of stock
+        {{else}}
+        <input type="checkbox" name="selectedItems" value="{{.IdWishlist}}" class="item-checkbox">
+        {{end}}
         <img src="/{{.ProductImage}}" alt="" class="img gambar">
         <span>{{.ProductName}}</span>
         <span>{{.ProductPrice}}</span>
@@ -22,12 +26,16 @@
                 <button type="submit">-</button>
             {{end}}
         </form>
-        <span id="counter-value-{{.ID}}">{{.Quantity}}</span>
+        <span id="counter-value-{{.IdWishlist}}">{{.Quantity}}</span>
+        {{if ge .Quantity .ProductStock}}
+        out of stock <br>
+        {{else}}
         <form action="/updateWishlistQuantity/{{.IdWishlist}}" method="POST">
             <input type="hidden" name="productId" value="{{.IdProduct}}">
             <input type="hidden" name="quantity" value="{{plus .Quantity 1}}">
             <button type="submit">+</button>
         </form>
+        {{end}}
         <span>{{mul .ProductPrice .Quantity}}</span>
     </div>
 {{end}}
