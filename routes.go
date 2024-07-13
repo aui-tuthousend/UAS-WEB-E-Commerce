@@ -25,29 +25,32 @@ func SetupRoutes(app *fiber.App) {
 		return c.Next()
 	}
 
-	n := func(c *fiber.Ctx) error {
-		store := controllers.Store
-
-		sess, err := store.Get(c)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
-		}
-
-		idU := sess.Get("IDuser")
-		if idU != nil {
-			return c.Redirect("/home")
-		}
-
-		return c.Next()
-	}
+	//n := func(c *fiber.Ctx) error {
+	//	store := controllers.Store
+	//
+	//	sess, err := store.Get(c)
+	//	if err != nil {
+	//		return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
+	//	}
+	//
+	//	idU := sess.Get("IDuser")
+	//	if idU != nil {
+	//		return c.Redirect("/home")
+	//	}
+	//
+	//	return c.Next()
+	//}
 	//auth := app.Group("/", m)
 
 	app.Get("/regis", func(c *fiber.Ctx) error { return c.Render("sesi/regis", fiber.Map{}) })
 	app.Post("/register", controllers.Register)
 
 	app.Get("/login", func(c *fiber.Ctx) error { return c.Render("sesi/login", fiber.Map{}) })
+
+	app.Get("/", func(c *fiber.Ctx) error { return c.Render("main/landing", fiber.Map{}) })
+
 	app.Post("/loginVerif", controllers.Login)
-	app.Get("/", n, controllers.Landing)
+	app.Get("/viewKategori/:idK", controllers.ViewKategori)
 
 	app.Get("/logout", m, controllers.LogOut)
 

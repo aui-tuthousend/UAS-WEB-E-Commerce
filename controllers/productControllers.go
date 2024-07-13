@@ -18,27 +18,35 @@ func HashId(id string) (string, error) {
 
 func ShowProduct(c *fiber.Ctx) error {
 
-	var products []models.Product
-	if err := initializers.GetDB().Find(&products).Error; err != nil {
-		return err
-	}
-
 	sess, err := Store.Get(c)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
 	}
 	idUser := sess.Get("IDuser").(uint)
-	return c.Render("main/home", fiber.Map{"products": products, "idUser": idUser})
+	return c.Render("main/home", fiber.Map{"idUser": idUser})
 }
 
-func Landing(c *fiber.Ctx) error {
-
-	var products []models.Product
-	if err := initializers.GetDB().Find(&products).Error; err != nil {
-		return err
+func ViewKategori(c *fiber.Ctx) error {
+	idK := c.Params("idK")
+	id, err := strconv.ParseUint(idK, 10, 32)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Invalid category product ID")
 	}
 
-	return c.Render("main/landing", fiber.Map{"products": products})
+	var products []models.Product
+	query := initializers.GetDB().Model(&models.Product{}).Where("category_id = ?", uint(id))
+	if err := query.Find(&products).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).SendString("xxD")
+	}
+
+	count := len(products)
+
+	var kategori models.Category
+	if err := initializers.GetDB().First(&kategori, uint(id)).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).SendString("Product not found")
+	}
+
+	return c.Render("main/viewKategori", fiber.Map{"products": products, "kategori": kategori, "len": count})
 }
 
 func ViewProduct(c *fiber.Ctx) error {

@@ -114,7 +114,7 @@ func Checkout(c *fiber.Ctx) error {
 			return c.Status(fiber.StatusNotFound).SendString("Product not found")
 		}
 
-		temptot := DWislis.Quantity * DWislis.ProductPrice
+		temptot := DWislis.Quantity * productReal.ProductPrice
 		total += temptot
 
 		newProductCopies := models.ProductCopy{
