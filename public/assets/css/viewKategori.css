@@ -1,0 +1,38 @@
+.ce1{
+    position: sticky;
+    top: 0;
+    background: white;
+    height: 5rem;
+    margin: 2rem 0 -2rem 0;
+    padding: 0rem 2rem 0rem 2rem;
+    justify-content: space-between;
+}
+
+.ce2{
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    /*grid-template-columns: auto auto auto auto;*/
+    flex-wrap: wrap;
+    gap: 25px;
+    /*column-gap: 20px;*/
+    padding: 3rem 2rem 3rem 2rem;
+
+}
+
+.ce2-1{
+    width: 32%;
+    height: 38.5rem;
+}
+
+.ce2-1:hover{
+    .ce2-2{
+        background: yellow;
+    }
+}
+
+.ce2-2{
+    width: 100%;
+    height: 33rem;
+    background: navajowhite;
+}

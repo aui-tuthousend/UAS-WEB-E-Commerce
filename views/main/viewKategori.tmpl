@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/viewKategori.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/template.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+</head>
+<body>
+<body>
+<!-- headeeerrrrrrrrrr-->
+
+<div class="free row-sb-c">
+    <div style="color: black;">aaaaaaaa</div>
+    <p>Free Shipping! On All Orders.</p>
+    <strong>STORE LOCATOR</strong>
+</div>
+<div class="h1 row-sb">
+    <div class="row" style="gap: 1rem">
+        <p>sign in</p>
+        <p>or</p>
+        <p>join now</p>
+    </div>
+    <div>
+        <h1>STEVE MADDEN</h1>
+    </div>
+
+    <div class="row-c">
+        <img src="/images/png/search.png" alt="">
+        <input type="text" class="input" placeholder="Search">
+        <a href="cart.html">
+            <img src="/images/png/bag.png" alt="">
+        </a>
+    </div>
+</div>
+
+<div class="h2 row-c">
+    <h3>New & Now</h3>
+    <h3>Shoes</h3>
+    <h3>Handbags</h3>
+    <h3>Sale</h3>
+</div>
+
+<!-- headeeerrrrrrrrrr-->
+
+<div class="ce1 row-sb-c">
+    <div class="row-fs-fs">
+        <h1><strong>{{.kategori.CategoryName}}</strong></h1>
+        <p style="margin: 0.2rem 0 0 0.3rem;">({{.len}})</p>
+    </div>
+    <div class="row" style="gap: 2rem">
+        <h3>Show Filters</h3>
+        <div class="row" style="gap: 0.5rem">
+            <h3>Sort by: </h3>
+            <select style="width: 10rem;" name="" id="">
+                <option value="a">Featured</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="ce2">
+    {{range .products}}
+    <a class="ce2-1 col" href="/produk/{{.ID}}">
+        <!--        after   -->
+        <img class="ce2-2 img" src="/{{.ProductImageCover}}" alt="">
+        <h1 style="margin-bottom: 0.2rem;">{{.ProductName}}</h1>
+        <h3>{{.ProductPrice}}</h3>
+        <p>or 3 payments of Rp. 10000</p>
+    </a>
+    {{end}}
+
+</div>
+
+
+</body>
