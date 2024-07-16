@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <link rel="stylesheet" type="text/css" href="/css/cart.css">
+    <link rel="stylesheet" type="text/css" href="/css/heder.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/template.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+</head>
+<body>
+<div class="free row-sb-c">
+    <div style="color: black;">aaaaaaaa</div>
+    <p>Free Shipping! On All Orders.</p>
+    <strong>STORE LOCATOR</strong>
+</div>
+<div class="h1">
+    <a href="/logout" class="item" style="margin-right: 6.8rem;">
+        <p>logout</p>
+    </a>
+    <div class="item middle">
+        <h1>STEVE MADDEN</h1>
+    </div>
+
+    <div class="row-c item">
+        <i class='bx bx-search'></i>
+        <input type="text" class="input" placeholder="Search">
+        <a href="/wishList">
+            <i class='bx bx-shopping-bag' ></i>
+        </a>
+    </div>
+</div>
+
+<div class="h2 row-c">
+    <h3>New & Now</h3>
+    <h3>Shoes</h3>
+    <h3>Handbags</h3>
+    <h3>Sale</h3>
+</div>
+
+<div class="ca1 col-c">
+    <h2>YOUR CART</h2>
+    <div class="ca1-1 row-sb">
+        <div class="wrapper-produk col">
+            {{range .wishlists}}
+                <div class="produk row-sb-c">
+                    <div class="row">
+                        <input type="checkbox" checked name="selectedItems" value="{{.IdWishlist}}" class="item-checkbox" hidden="hidden">
+{{/*                        <input type="checkbox" name="selectedItems" value="{{.IdWishlist}}" class="item-checkbox">*/}}
+                        <img src="/{{.ProductImage}}" alt="" class="img gamb">
+                        <div class="col-c">
+                            <h3>{{.ProductName}}</h3>
+                            <p>size: small</p>
+                            <p>color: black</p>
+                        </div>
+                    </div>
+                    <div class="row-sb-c">
+                        <form action="/updateWishlistQuantity/{{.IdWishlist}}" method="POST">
+                            <input type="hidden" name="productId" value="{{.IdProduct}}">
+                            <input type="hidden" name="quantity" value="{{min .Quantity 1}}">
+                            {{if eq .Quantity 1}}
+                                <button type="submit" class="am col-c" onclick="return confirm('delete from cart?')">-</button>
+                            {{else}}
+                                <button type="submit" class="am col-c">-</button>
+                            {{end}}
+                        </form>
+                        <span id="counter-value-{{.IdWishlist}}" class="am2 col-c">{{.Quantity}}</span>
+                        {{if ge .Quantity .ProductStock}}
+                        out of stock <br>
+                        {{else}}
+                        <form action="/updateWishlistQuantity/{{.IdWishlist}}" method="POST">
+                            <input type="hidden" name="productId" value="{{.IdProduct}}">
+                            <input type="hidden" name="quantity" value="{{plus .Quantity 1}}">
+                            <button type="submit" class="am col-c">+</button>
+                        </form>
+                        {{end}}
+                    </div>
+                    <form action="/deleteWishlist/{{.IdWishlist}}" method="POST" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Delete from cart?')">
+                            <i class='bx bx-trash'></i>
+                        </button>
+                    </form>
+
+
+                    <h3>$ {{.ProductPrice}}</h3>
+                </div>
+            {{end}}
+            <hr>
+        </div>
+        <div class="summary col">
+            <h3>MERCHANDISE SUBTOTAL:</h3>
+            <h3>$ {{.w}}</h3>
+            <div class="row-sb">
+                <h3>DISCOUNT</h3>
+                <h3>$ 0</h3>
+            </div>
+            <div class="row-sb">
+                <input class="copuon" type="text" placeholder="Enter discount code">
+                <div class="app col-c">APPLY</div>
+            </div>
+            <div class="row-sb">
+                <h3>ORDER SUBTOTAL:</h3>
+                <h3>$ {{.w}}</h3>
+            </div>
+            <div class="cek col-c">
+                <button type="submit" onclick="checkout(event)"><h2>CHECK OUT</h2></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function checkout(event) {
+        event.preventDefault();
+
+        const selectedItems = Array.from(document.querySelectorAll('.item-checkbox:checked'))
+            .map(checkbox => checkbox.value);
+
+        const formData = {
+            selectedItems: selectedItems
+        };
+
+        fetch('/checkout', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                window.location.href = '/';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+</body>
+</html>
