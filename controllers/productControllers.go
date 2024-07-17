@@ -16,16 +16,6 @@ func HashId(id string) (string, error) {
 	return string(bytes), err
 }
 
-func ShowProduct(c *fiber.Ctx) error {
-
-	sess, err := Store.Get(c)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
-	}
-	idUser := sess.Get("IDuser").(uint)
-	return c.Render("main/home", fiber.Map{"idUser": idUser})
-}
-
 func ViewKategori(c *fiber.Ctx) error {
 	idK := c.Params("idK")
 	id, err := strconv.ParseUint(idK, 10, 32)
@@ -45,6 +35,8 @@ func ViewKategori(c *fiber.Ctx) error {
 	if err := initializers.GetDB().First(&kategori, uint(id)).Error; err != nil {
 		return c.Status(fiber.StatusNotFound).SendString("Product not found")
 	}
+
+	//fmt.Print(idUser)
 
 	return c.Render("main/viewKategori", fiber.Map{"products": products, "kategori": kategori, "len": count})
 }
@@ -67,7 +59,8 @@ func ViewProduct(c *fiber.Ctx) error {
 	if err := query.Find(&photos).Error; err != nil {
 		return c.Status(fiber.StatusNotFound).SendString("No photos found with the given conditions")
 	}
-	return c.Render("produk/viewProduct", fiber.Map{"product": product, "photos": photos})
+
+	return c.Render("main/viewProduct", fiber.Map{"product": product, "photos": photos})
 }
 
 func StoreProduct(c *fiber.Ctx) error {

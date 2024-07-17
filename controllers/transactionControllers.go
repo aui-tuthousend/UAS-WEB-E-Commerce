@@ -13,14 +13,14 @@ type CheckoutPayload struct {
 }
 
 func ShowTransaction(c *fiber.Ctx) error {
-	idU := c.Params("idUser")
-	idUser, err := strconv.ParseUint(idU, 10, 32)
+	sess, err := Store.Get(c)
 	if err != nil {
-		return c.SendString("asdasdsad")
+		return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
 	}
+	idUser := sess.Get("IDuser").(uint)
 
 	var transactions []models.Transaction
-	query := initializers.GetDB().Model(&models.Transaction{}).Where("id_user = ?", uint(idUser))
+	query := initializers.GetDB().Model(&models.Transaction{}).Where("id_user = ?", idUser)
 	if err := query.Find(&transactions).Error; err != nil {
 		return c.SendString("tidak adada")
 	}

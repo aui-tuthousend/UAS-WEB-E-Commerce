@@ -8,11 +8,11 @@ import (
 )
 
 func InsertIntoWishlist(c *fiber.Ctx) error {
-	idWishlist := c.Params("idUser")
-	idW, err := strconv.ParseUint(idWishlist, 10, 32)
+	sess, err := Store.Get(c)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Invalid user ID")
+		return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
 	}
+	idUser := sess.Get("IDuser").(uint)
 
 	idBarang := c.Params("idProduct")
 	idB, err := strconv.ParseUint(idBarang, 10, 32)
@@ -21,7 +21,7 @@ func InsertIntoWishlist(c *fiber.Ctx) error {
 	}
 
 	var wislis []models.DetailWishlist
-	if err := initializers.GetDB().Where("id_wishlist = ?", uint(idW)).Find(&wislis).Error; err != nil {
+	if err := initializers.GetDB().Where("id_wishlist = ?", idUser).Find(&wislis).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString("Failed to retrieve wishlist")
 	}
 
@@ -38,7 +38,7 @@ func InsertIntoWishlist(c *fiber.Ctx) error {
 	}
 
 	newDetailWislis := models.DetailWishlist{
-		IdWishlist: uint(idW),
+		IdWishlist: idUser,
 		IdProduct:  uint(idB),
 		Quantity:   1,
 	}
@@ -47,22 +47,27 @@ func InsertIntoWishlist(c *fiber.Ctx) error {
 		return err
 	}
 
-	return c.Redirect("/")
+	referer := c.Get("Referer", "/")
+
+	return c.Redirect(referer)
 }
 
 func ShowWishList(c *fiber.Ctx) error {
-	idWishlist := c.Params("idUser")
-	idW, err := strconv.ParseUint(idWishlist, 10, 32)
+
+	sess, err := Store.Get(c)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Invalid user ID")
+		return c.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
 	}
+	idUser := sess.Get("IDuser").(uint)
 
 	var wislis []models.DetailWishlist
-	query := initializers.GetDB().Model(&models.DetailWishlist{}).Where("id_wishlist = ?", uint(idW))
+	query := initializers.GetDB().Model(&models.DetailWishlist{}).Where("id_wishlist = ?", idUser)
 
 	if err := query.Find(&wislis).Error; err != nil {
 		return c.Status(fiber.StatusNotFound).SendString("No photos found with the given conditions")
 	}
+
+	w := 0
 
 	type wish struct {
 		IdWishlist   uint
@@ -92,10 +97,34 @@ func ShowWishList(c *fiber.Ctx) error {
 			Quantity:     wi.Quantity,
 		}
 
+		w += (newWish.Quantity * newWish.ProductPrice)
+
 		wisl = append(wisl, newWish)
 	}
 
-	return c.Render("main/wishList", fiber.Map{"wishlists": wisl})
+	return c.Render("main/cart", fiber.Map{"wishlists": wisl, "w": w})
+}
+
+func DeleteWislis(c *fiber.Ctx) error {
+	idW := c.Params("idW")
+
+	id, err := strconv.ParseUint(idW, 10, 32)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Invalid product ID")
+	}
+
+	var wishlistItem models.DetailWishlist
+	if err := initializers.GetDB().Where("ID = ?", uint(id)).First(&wishlistItem).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).SendString("Wishlist item not found")
+	}
+
+	if err := initializers.GetDB().Delete(&wishlistItem).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString("Failed to update quantity")
+	}
+
+	referer := c.Get("Referer", "/")
+
+	return c.Redirect(referer)
 }
 
 func UpdateWishlistQ(c *fiber.Ctx) error {

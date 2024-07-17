@@ -47,16 +47,19 @@ func SetupRoutes(app *fiber.App) {
 
 	app.Get("/login", func(c *fiber.Ctx) error { return c.Render("sesi/login", fiber.Map{}) })
 
-	app.Get("/", func(c *fiber.Ctx) error { return c.Render("main/landing", fiber.Map{}) })
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.Render("main/landing", fiber.Map{})
+	})
 
 	app.Post("/loginVerif", controllers.Login)
 	app.Get("/viewKategori/:idK", controllers.ViewKategori)
 
 	app.Get("/logout", m, controllers.LogOut)
 
-	app.Post("/insertWishlist/:idUser/:idProduct", m, controllers.InsertIntoWishlist)
+	app.Post("/insertWishlist/:idProduct", m, controllers.InsertIntoWishlist)
 	app.Post("/checkout", m, controllers.Checkout)
 	app.Post("/updateWishlistQuantity/:idDQ", m, controllers.UpdateWishlistQ)
+	app.Post("/deleteWishlist/:idW", m, controllers.DeleteWislis)
 
 	//app.Get("/createCategory", m, func(c *fiber.Ctx) error { return c.Render("produk/createCategory", fiber.Map{}) })
 	app.Post("/storeCategory", m, controllers.AddKategori)
@@ -70,9 +73,11 @@ func SetupRoutes(app *fiber.App) {
 
 		return c.Render("produk/createProduct", fiber.Map{"categories": categories})
 	})
-	app.Get("/home", m, controllers.ShowProduct)
+	app.Get("/home", m, func(c *fiber.Ctx) error {
+		return c.Render("main/home", fiber.Map{})
+	})
 	app.Get("/produk/:id", controllers.ViewProduct)
 
-	app.Get("/wishlist/:idUser", m, controllers.ShowWishList)
-	app.Get("/history/:idUser", m, controllers.ShowTransaction)
+	app.Get("/wishlist", m, controllers.ShowWishList)
+	app.Get("/history", m, controllers.ShowTransaction)
 }
