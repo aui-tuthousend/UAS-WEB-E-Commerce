@@ -19,6 +19,17 @@ a {
     text-decoration: none;
 }
 
+ button {
+     background: none;
+     border: none;
+     color: inherit;
+     font: inherit;
+     cursor: pointer;
+     outline: none;
+     padding: 0;
+     margin: 0;
+ }
+
 body{
     overflow-x: hidden;
     /*height: 200vh;*/
